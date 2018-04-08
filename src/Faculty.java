@@ -4,21 +4,20 @@ import java.lang.NullPointerException;
 
 
 public class Faculty {
-    public static void main(String [] args) {
+    public static void main(String[] args) {
 
         int size = 3;
         String[] teachers = {"Бойко", "Маталыцкий", "Петревич"};
         String[] course = {"Алгебра", "Геометрия", "Программирование"};
 
 
-
         Map map = new HashMap<String, String>();
         while (true) {
             String[] mirror_course = {"Алгебра", "Геометрия", "Программирование"};
-            String[] mirror_teachers ={"Бойко", "Маталыцкий", "Петревич"};
+            String[] mirror_teachers = {"Бойко", "Маталыцкий", "Петревич"};
             Student name_std = new Student();
             String name = name_std.Input_name();
-            if(name.equals("exit")) break;
+            if (name.equals("exit")) break;
 
             Teacher tch = new Teacher();
             if (!tch.TorS(name, teachers)) {
@@ -38,7 +37,7 @@ public class Faculty {
 
                 std.Course_student(size, teachers, course, mirror_course, name, map);
                 teachers = mirror_teachers;
-                course=mirror_course;
+                course = mirror_course;
 
             } else {
                 try {
@@ -52,20 +51,18 @@ public class Faculty {
                             System.arraycopy(stud_c, k + 1, stud_c, k, size_stud - 1 - k);
                             size_stud--;
                         }
-                    }if (stud_c[size_stud-1].equals("null")) size_stud--;
+                    }
+                    if (stud_c[size_stud - 1].equals("null")) size_stud--;
 
 
                     System.out.println("Студенты, которые записались на ваш курс:");
                     for (int i = 0; i < size_stud; i++)
-                        System.out.println("\t"+stud_c[i]);
+                        System.out.println("\t" + stud_c[i]);
                     tch.Archive_course(course[amount]);
-                    int size_mirror= size_stud;
-                    tch.Input_value(stud_c, size_stud,size_mirror);
-                }
-                catch (NullPointerException e)
-                {
+                    int size_mirror = size_stud;
+                    tch.Input_value(stud_c, size_stud, size_mirror);
+                } catch (NullPointerException e) {
                     System.out.println("\tНикто не записался на ваш курс");
-                    continue;
                 }
             }
         }

@@ -1,3 +1,5 @@
 # Java labs for university
-- ~~Lab 1~~
-- Lab 2 (WIP)
+- Lab 1 (`status` - **WIP**)
+- Lab 2
+- Lab 3
+- Lab 4

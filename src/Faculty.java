@@ -16,15 +16,15 @@ public class Faculty {
             String[] mirror_course = {"Алгебра", "Геометрия", "Программирование"};
             String[] mirror_teachers = {"Бойко", "Маталыцкий", "Петревич"};
             Student name_std = new Student();
-            String name = name_std.Input_name();
+            String name = name_std.inputName();
             if (name.equals("exit")) break;
 
             Teacher tch = new Teacher();
             if (!tch.TorS(name, teachers)) {
 
                 System.out.println("Вы авторизовались как студент");
-                name_std.Input_info();
-                name_std.Archive();
+                name_std.inputInfo();
+                name_std.saveToArchive();
                 System.out.println("Преподаватель   -   Курс");
                 System.out.println("--------------------------");
                 for (int i = 0; i < size; i++) {

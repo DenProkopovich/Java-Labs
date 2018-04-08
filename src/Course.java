@@ -51,7 +51,8 @@ public class Course {
                     name+=name_map;
                     map.put(course[i],name);
 
-                    Shift(teachers,course,i,size); //         сдвиг последующих элементов
+                    //сдвиг последующих элементов
+                    Shift(teachers,course,i,size);
                     count--;
                     size--;
                     break;

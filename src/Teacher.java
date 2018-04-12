@@ -1,130 +1,166 @@
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
 public class Teacher {
     String student;
     int value;
 
-    public boolean TorS(String name,String[]teachers)
-    {
-        for(int i=0;i<teachers.length;i++)
-        {
-            if(teachers[i].compareToIgnoreCase(name) == 0)
+    public boolean torS(String name, String[] teachers) {
+        for (int i = 0; i < teachers.length; i++) {
+            if (teachers[i].compareToIgnoreCase(name) == 0)
                 return true;
         }
         return false;
     }
-     public int Teacher_index(String[]teachers,String name)
-     {
-         for(int i=0;i<teachers.length;i++)
-         {
-             if(teachers[i].compareToIgnoreCase(name) == 0)
-                 return i;
-         }
-         return 0;
-     }
-    public void Shift(String[] teachers, int index,int size)
-    {if(size>2)
-        for (int j = index; j < size - 1; j++) { //         сдвиг последующих элементов
-            teachers[j] = teachers[j + 1];
 
+    public int teacherIndex(String[] teachers, String name) {
+        for (int i = 0; i < teachers.length; i++) {
+            if (teachers[i].compareToIgnoreCase(name) == 0)
+                return i;
         }
+        return 0;
+    }
+
+    public void shift(String[] teachers, int index, int size) {
+        if (size > 2)
+            for (int j = index; j < size - 1; j++) { //         сдвиг последующих элементов
+                teachers[j] = teachers[j + 1];
+
+            }
         else teachers[index] = teachers[index + 1];
 
     }
 
-     public void Input_value(String[] stud_c,int size_stud, int size_mirror)
-     {
-         int count = 0;
+    public void inputValue(String[] stud_c, int size_stud, int size_mirror) {
+        int count = 0;
 
-         while(true ){
-         Scanner in = new Scanner(System.in);
-         System.out.print("Введите фамилию студента, которому хотите выставить оценку или введите 0 для выхода: ");
-         this.student = in.nextLine();
-         if((this.student).equals("0"))break;
-         boolean count_same=true;
-         for (int i = 0; i < size_stud; i++)
-         {
+        while (true) {
+            Scanner in = new Scanner(System.in);
+            System.out.print("Введите фамилию студента, которому хотите выставить оценку или введите 0 для выхода: ");
+            this.student = in.nextLine();
+            if ((this.student).equals("0")) break;
+            boolean count_same = true;
+            for (int i = 0; i < size_stud; i++) {
 
-             if (stud_c[i].compareToIgnoreCase(this.student) == 0)
-             {
-                 count_same=false;
+                if (stud_c[i].compareToIgnoreCase(this.student) == 0) {
+                    count_same = false;
 
-                 this.student = stud_c[i];
+                    this.student = stud_c[i];
 
 
+                    while (true) {
+                        count_same = false;
+                        Scanner fin = new Scanner(System.in);
+                        System.out.print("Введите оценку студенту " + stud_c[i] + ": ");
+                        String str = fin.nextLine();
+                        try {
+                            this.value = Integer.parseInt(str);
+                            if (this.value >= 0 && this.value <= 10)
+                                break;
+                            else {
+                                System.out.println("\tНеккоректный ввод");
+                                continue;
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("\tНеккоректный ввод");
+                            continue;
+                        }
+                    }
+                    archive();
+                    count++;
+                    shift(stud_c, i, size_stud);
+                    size_stud--;
+                } else {
+                    System.out.println("Вы уже выставили оценку этому студенту либо такого студента нету");
+                    break;
 
-                 while(true){
-                     Scanner fin = new Scanner(System.in);
-                     System.out.print("Введите оценку студенту " + stud_c[i] + ": ");
-                     String str = fin.nextLine();
-                     try {
-                         this.value=Integer.parseInt(str);
-                         if(this.value >= 0 && this.value <= 10)
-                             break;
-                         else { System.out.println("\tНеккоректный ввод");continue;}
-                     }catch(NumberFormatException e)
-                     {
-                         System.out.println("\tНеккоректный ввод");
-                         continue;
-                     }
-                 }
-                 Archive();
-                 count++;
-                 Shift(stud_c,i,size_stud);
-                 size_stud--;
-             }
+                }
 
-         }
-         if(count_same) System.out.println("Вы уже выставили оценку этому студенту");
+            }
 
-             if (count==size_mirror)
-             {
-                 System.out.println("Вы выставили оценки всем студентам!");
-                 break;
-             }
-         }
-         if(count==0) {
-             System.out.println("\tОценки не выставлены");
-            Archive_zero();
-         }
-     }
-    void Archive_zero(){
-        try(FileWriter writer = new FileWriter("att.txt",true))
-        {
+            if (count == size_mirror) {
+                System.out.println("Вы выставили оценки всем студентам!");
+                break;
+            }
+
+
+        }
+        if (count == 0) {
+            System.out.println("\tОценки не выставлены");
+            archiveZero();
+        }
+    }
+
+    void archiveZero() {
+        try (FileWriter writer = new FileWriter("att.txt", true)) {
             writer.write("\tОценки не выставлены ");
             writer.write("\n");
             writer.flush();
-        }
-        catch(IOException ex){
-
-            System.out.println(ex.getMessage());
-        }
-    }
-    void Archive_course( String course){
-        try(FileWriter writer = new FileWriter("att.txt",true))
-        {
-            writer.write("Оценки за курс обучения по "+ course+": ");
-            writer.write("\n");
-            writer.flush();
-        }
-        catch(IOException ex){
+        } catch (IOException ex) {
 
             System.out.println(ex.getMessage());
         }
     }
 
-    void Archive(){
-        try(FileWriter writer = new FileWriter("att.txt",true))
-        {
-            writer.write("\t"+this.student+" - "+this.value);
+    void archiveCourse(String course) {
+        try (FileWriter writer = new FileWriter("att.txt", true)) {
+            writer.write("Оценки за курс обучения по " + course + ": ");
             writer.write("\n");
             writer.flush();
+        } catch (IOException ex) {
+
+            System.out.println(ex.getMessage());
         }
-        catch(IOException ex){
+    }
+
+    void archive() {
+        try (FileWriter writer = new FileWriter("att.txt", true)) {
+            writer.write("\t" + this.student + " - " + this.value);
+            writer.write("\n");
+            writer.flush();
+        } catch (IOException ex) {
 
             System.out.println(ex.getMessage());
         }
     }
 }
+
+   /* //a =(arraylist<>) desrerdata(filename)  s4itbivanie
+    //serdata(filename, class)
+    Object deserData(String file_name) {
+        Object retObject=null;
+        try {
+            FileInputStream fileIn=new FileInputStream(file_name);
+            ObjectInputStream in=new ObjectInputStream(fileIn);
+            retObject=in.readObject();
+            fileIn.close();
+            in.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not founded");
+            System.exit(1);
+        } catch (IOException e) {
+            System.out.println("Error input/output");
+            System.exit(2);
+        } catch (ClassNotFoundException e) {
+            System.out.println("Class not founded");
+            System.exit(3);
+        }
+        return retObject;
+    }
+     void serData(String file_name,Object obj) {
+        try {
+            FileOutputStream fileOut=new FileOutputStream(file_name);
+            ObjectOutputStream out=new ObjectOutputStream(fileOut);
+            out.writeObject(obj);
+            fileOut.close();
+            out.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not founded");
+            System.exit(1);
+        } catch (IOException e) {
+            System.out.println("Error input/output");
+            System.exit(2);
+        }
+
+    }*/
+

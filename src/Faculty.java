@@ -2,7 +2,6 @@ import java.util.Map;
 import java.util.HashMap;
 import java.lang.NullPointerException;
 
-
 public class Faculty {
     public static void main(String[] args) {
 
@@ -18,13 +17,13 @@ public class Faculty {
             Student name_std = new Student();
             String name = name_std.inputName();
             if (name.equals("exit")) break;
-
+            String full_name;
             Teacher tch = new Teacher();
-            if (!tch.TorS(name, teachers)) {
+            if (!tch.torS(name, teachers)) {
 
                 System.out.println("Вы авторизовались как студент");
-                name_std.inputInfo();
-                name_std.saveToArchive();
+                full_name = name_std.inputInfo();
+
                 System.out.println("Преподаватель   -   Курс");
                 System.out.println("--------------------------");
                 for (int i = 0; i < size; i++) {
@@ -35,20 +34,21 @@ public class Faculty {
                 Course std = new Course();
 
 
-                std.Course_student(size, teachers, course, mirror_course, name, map);
+                std.courseStudent(size, teachers, course, mirror_course, name, map, full_name);
                 teachers = mirror_teachers;
                 course = mirror_course;
 
             } else {
                 try {
-                    int amount = tch.Teacher_index(teachers, name);
+                    int amount = tch.teacherIndex(teachers, name);
                     System.out.println("\nКурс: " + course[amount] + "\nПреподаватель: " + teachers[amount]);
                     String str_map = (String) map.get(course[amount]);
                     String[] stud_c = str_map.split(" ");
                     int size_stud = stud_c.length;
                     for (int k = 0; k < size_stud; k++) {
                         if (stud_c[k].equals("null")) {
-                            System.arraycopy(stud_c, k + 1, stud_c, k, size_stud - 1 - k);
+                            for (int j = k; j < size_stud - 1; j++)
+                                stud_c[j] = stud_c[j + 1];
                             size_stud--;
                         }
                     }
@@ -58,11 +58,12 @@ public class Faculty {
                     System.out.println("Студенты, которые записались на ваш курс:");
                     for (int i = 0; i < size_stud; i++)
                         System.out.println("\t" + stud_c[i]);
-                    tch.Archive_course(course[amount]);
+                    tch.archiveCourse(course[amount]);
                     int size_mirror = size_stud;
-                    tch.Input_value(stud_c, size_stud, size_mirror);
+                    tch.inputValue(stud_c, size_stud, size_mirror);
                 } catch (NullPointerException e) {
                     System.out.println("\tНикто не записался на ваш курс");
+                    continue;
                 }
             }
         }

@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Student {
-    private String name;
+    String name;
 
     public String inputName() {
         boolean count = true;
@@ -13,20 +13,25 @@ public class Student {
             this.name = in.nextLine();
             if (this.name.length() > 1) {
                 boolean digit = false;
-                for (int i = 0; i < this.name.length(); i++)
+                for (int i = 0; i < this.name.length(); i++) {
                     if (this.name.charAt(i) >= '0' && this.name.charAt(i) <= '9')
                         digit = true;
+                    else if (this.name.charAt(i) == ' ') digit = true;
+                }
                 if (digit) {
                     System.out.println("Неккоретный ввод");
+                    continue;
                 } else count = false;
             } else {
                 System.out.println("Неккоретный ввод");
+                continue;
             }
+
         }
         return this.name;
     }
 
-    public void inputInfo() {
+    public String inputInfo() {
         boolean count = true;
         String str = "";
         while (count) {
@@ -38,21 +43,25 @@ public class Student {
                 for (int i = 0; i < str.length(); i++)
                     if (str.charAt(i) >= '0' && str.charAt(i) <= '9')
                         digit = true;
+                    else if (str.charAt(i) == ' ') digit = true;
                 if (digit) {
                     System.out.println("Неккоретный ввод");
+                    continue;
                 } else count = false;
             } else {
                 System.out.println("Неккоретный ввод");
+                continue;
             }
         }
         this.name += " ";
         this.name += str;
+        return this.name;
     }
 
 
-    void saveToArchive() {
+    void archive(String str) {
         try (FileWriter writer = new FileWriter("archive.txt", true)) {
-            writer.write("\n" + this.name);
+            writer.write("\n" + str);
             writer.write("\n\t Перечень выбранных курсов: ");
             writer.flush();
         } catch (IOException ex) {

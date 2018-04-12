@@ -47,8 +47,7 @@ public class Faculty {
                     int size_stud = stud_c.length;
                     for (int k = 0; k < size_stud; k++) {
                         if (stud_c[k].equals("null")) {
-                            for (int j = k; j < size_stud - 1; j++)
-                                stud_c[j] = stud_c[j + 1];
+                            System.arraycopy(stud_c, k + 1, stud_c, k, size_stud - 1 - k);
                             size_stud--;
                         }
                     }
@@ -63,7 +62,6 @@ public class Faculty {
                     tch.inputValue(stud_c, size_stud, size_mirror);
                 } catch (NullPointerException e) {
                     System.out.println("\tНикто не записался на ваш курс");
-                    continue;
                 }
             }
         }

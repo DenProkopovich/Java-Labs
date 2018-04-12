@@ -2,12 +2,12 @@ import java.io.*;
 import java.util.Scanner;
 
 public class Teacher {
-    String student;
-    int value;
+    private String student;
+    private int value;
 
     public boolean torS(String name, String[] teachers) {
-        for (int i = 0; i < teachers.length; i++) {
-            if (teachers[i].compareToIgnoreCase(name) == 0)
+        for (String teacher : teachers) {
+            if (teacher.compareToIgnoreCase(name) == 0)
                 return true;
         }
         return false;
@@ -21,12 +21,9 @@ public class Teacher {
         return 0;
     }
 
-    public void shift(String[] teachers, int index, int size) {
+    private void shift(String[] teachers, int index, int size) {
         if (size > 2)
-            for (int j = index; j < size - 1; j++) { //         сдвиг последующих элементов
-                teachers[j] = teachers[j + 1];
-
-            }
+            System.arraycopy(teachers, index + 1, teachers, index, size - 1 - index);
         else teachers[index] = teachers[index + 1];
 
     }
@@ -39,17 +36,17 @@ public class Teacher {
             System.out.print("Введите фамилию студента, которому хотите выставить оценку или введите 0 для выхода: ");
             this.student = in.nextLine();
             if ((this.student).equals("0")) break;
-            boolean count_same = true;
+           // boolean count_same = true;
             for (int i = 0; i < size_stud; i++) {
 
                 if (stud_c[i].compareToIgnoreCase(this.student) == 0) {
-                    count_same = false;
+                    //count_same = false;
 
                     this.student = stud_c[i];
 
 
                     while (true) {
-                        count_same = false;
+                       // count_same = false;
                         Scanner fin = new Scanner(System.in);
                         System.out.print("Введите оценку студенту " + stud_c[i] + ": ");
                         String str = fin.nextLine();
@@ -59,11 +56,9 @@ public class Teacher {
                                 break;
                             else {
                                 System.out.println("\tНеккоректный ввод");
-                                continue;
                             }
                         } catch (NumberFormatException e) {
                             System.out.println("\tНеккоректный ввод");
-                            continue;
                         }
                     }
                     archive();
@@ -91,7 +86,7 @@ public class Teacher {
         }
     }
 
-    void archiveZero() {
+    private void archiveZero() {
         try (FileWriter writer = new FileWriter("att.txt", true)) {
             writer.write("\tОценки не выставлены ");
             writer.write("\n");
@@ -113,7 +108,7 @@ public class Teacher {
         }
     }
 
-    void archive() {
+    private void archive() {
         try (FileWriter writer = new FileWriter("att.txt", true)) {
             writer.write("\t" + this.student + " - " + this.value);
             writer.write("\n");

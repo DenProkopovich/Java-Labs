@@ -4,23 +4,23 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Course {
-    String course_stud;
+    private String course_stud;
 
-    public void shift(String[] teachers, String[] course, int index, int size) {
+    private void shift(String[] teachers, String[] course, int index, int size) {
         for (int j = index; j < size - 1; j++) { //         сдвиг последующих элементов
             teachers[j] = teachers[j + 1];
             course[j] = course[j + 1];
         }
     }
 
-    public String inputCourse() //ввод курса, на который хочет записаться студент
+    private String inputCourse() //ввод курса, на который хочет записаться студент
     {
         Scanner in = new Scanner(System.in);
         System.out.println("Введите название курса,на который вы хотите записаться, или введите 0 для выхода:");
         return in.nextLine();
     }
 
-    public boolean already(int size, String[] course_mirror, String course) {
+    private boolean already(int size, String[] course_mirror, String course) {
         boolean count = false;
         for (int i = 0; i < size; i++) {
             if (course_mirror[i].compareToIgnoreCase(course) == 0)
@@ -79,7 +79,7 @@ public class Course {
         }
     }
 
-    void archive() {
+    private void archive() {
         try (FileWriter writer = new FileWriter("archive.txt", true)) {
             writer.write("\n\t    " + this.course_stud);
             writer.flush();

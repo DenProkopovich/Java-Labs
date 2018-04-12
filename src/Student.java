@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Student {
-    String name;
+    private String name;
 
     public String inputName() {
         boolean count = true;
@@ -20,11 +20,9 @@ public class Student {
                 }
                 if (digit) {
                     System.out.println("Неккоретный ввод");
-                    continue;
                 } else count = false;
             } else {
                 System.out.println("Неккоретный ввод");
-                continue;
             }
 
         }
@@ -46,11 +44,9 @@ public class Student {
                     else if (str.charAt(i) == ' ') digit = true;
                 if (digit) {
                     System.out.println("Неккоретный ввод");
-                    continue;
                 } else count = false;
             } else {
                 System.out.println("Неккоретный ввод");
-                continue;
             }
         }
         this.name += " ";

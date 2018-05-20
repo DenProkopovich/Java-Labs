@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.Scanner;
 
-public class Teacher {
+public class Teacher implements Serializable {
     private String student;
     private int value;
 
@@ -36,7 +36,7 @@ public class Teacher {
             System.out.print("Введите фамилию студента, которому хотите выставить оценку или введите 0 для выхода: ");
             this.student = in.nextLine();
             if ((this.student).equals("0")) break;
-           // boolean count_same = true;
+            // boolean count_same = true;
             for (int i = 0; i < size_stud; i++) {
 
                 if (stud_c[i].compareToIgnoreCase(this.student) == 0) {
@@ -46,7 +46,7 @@ public class Teacher {
 
 
                     while (true) {
-                       // count_same = false;
+                        // count_same = false;
                         Scanner fin = new Scanner(System.in);
                         System.out.print("Введите оценку студенту " + stud_c[i] + ": ");
                         String str = fin.nextLine();

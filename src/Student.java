@@ -1,69 +1,49 @@
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Scanner;
 
-public class Student {
-    private String name;
+public class Student implements Serializable {
+    private String additionalInfo;
 
-    public String inputName() {
-        boolean count = true;
-        while (count) {
-            Scanner in = new Scanner(System.in);
-            System.out.print("\nАвторизация\n\tВведите вашу фамилию или введите exit для выхода: ");
-            this.name = in.nextLine();
-            if (this.name.length() > 1) {
-                boolean digit = false;
-                for (int i = 0; i < this.name.length(); i++) {
-                    if (this.name.charAt(i) >= '0' && this.name.charAt(i) <= '9')
-                        digit = true;
-                    else if (this.name.charAt(i) == ' ') digit = true;
-                }
-                if (digit) {
-                    System.out.println("Неккоретный ввод");
-                } else count = false;
-            } else {
-                System.out.println("Неккоретный ввод");
-            }
-
-        }
-        return this.name;
-    }
 
     public String inputInfo() {
-        boolean count = true;
+        boolean bool = true;
         String str = "";
-        while (count) {
+        String count=" ";
+        while (bool) {
             Scanner in = new Scanner(System.in);
-            System.out.print("Введите ваше имя: ");
-            str = in.nextLine();
-            if (str.length() > 1) {
+            System.out.print("Input name: ");
+            count += in.nextLine();
+            if (in.nextLine().length() > 1) {
                 boolean digit = false;
-                for (int i = 0; i < str.length(); i++)
-                    if (str.charAt(i) >= '0' && str.charAt(i) <= '9')
+                for (int i = 0; i < in.nextLine().length(); i++)
+                    if (in.nextLine().charAt(i) >= '0' && in.nextLine().charAt(i) <= '9')
                         digit = true;
-                    else if (str.charAt(i) == ' ') digit = true;
+                    else if (in.nextLine().charAt(i) == ' ') digit = true;
                 if (digit) {
-                    System.out.println("Неккоретный ввод");
-                } else count = false;
+                    System.out.println("Invalid input");
+                } else bool = false;
             } else {
-                System.out.println("Неккоретный ввод");
+                System.out.println("Invalid input");
             }
+
         }
-        this.name += " ";
-        this.name += str;
-        return this.name;
-    }
+        str+=count;
+        count=" ";
+        bool = true;
+        while (bool) {
+            Scanner in = new Scanner(System.in);
+            System.out.print("Input group ");
+            count+= in.nextLine();
+            if (in.nextLine().length() > 1) {
+                bool = false;
+            } else {
+                System.out.println("Invalid input");
+            }
 
-
-    void archive(String str) {
-        try (FileWriter writer = new FileWriter("archive.txt", true)) {
-            writer.write("\n" + str);
-            writer.write("\n\t Перечень выбранных курсов: ");
-            writer.flush();
-        } catch (IOException ex) {
-
-            System.out.println(ex.getMessage());
         }
+        str+=count;
+        return str;
     }
-
 }

@@ -1,17 +1,14 @@
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+import java.lang.String;
 import java.util.Scanner;
 
-public class Course {
-    private String course_stud;
+public class Course implements Serializable {
+    private String course;
 
-    private void shift(String[] teachers, String[] course, int index, int size) {
-        for (int j = index; j < size - 1; j++) { //         сдвиг последующих элементов
-            teachers[j] = teachers[j + 1];
-            course[j] = course[j + 1];
-        }
-    }
+
 
     private String inputCourse() //ввод курса, на который хочет записаться студент
     {
@@ -29,34 +26,24 @@ public class Course {
         return count;
     }
 
-    public void courseStudent(int size, String[] teachers, String[] course, String[] mirror, String name, Map map, String full_name) {// проверка на ввод курса
-        String mir = name;
-        int count_course = 1;
+    public void courseStudent(int size, String[] course, String[] mirror, ArrayList alg,ArrayList geo,ArrayList progr, String name) {// проверка на ввод курса
         while (true) {
             String str = inputCourse();
             if (str.equals("0")) break;
             int count = 0;
-
             for (int i = 0; i < size; i++) {
-                name = mir;
                 if (course[i].compareToIgnoreCase(str) == 0)//проверка - является ли введенная строка курсом
                 {
-
                     System.out.println("Вы записались на курс " + course[i]);
-                    this.course_stud = course[i];// курс, который выбрал студент
-                    Student name_std = new Student();
-                    if (count_course > 0) {
-                        name_std.archive(full_name);
-                        count_course--;
+                    this.course = course[i];// курс, который выбрал студент
+                    switch (i){
+                        case 0: alg.add(name); break;
+                        case 1: geo.add(name); break;
+                        case 2: progr.add(name); break;
                     }
-                    archive(); // запись курса в файл
 
-                    String name_map = (String) map.get(course[i]);
-                    name += " ";
-                    name += name_map;
-                    map.put(course[i], name);
 
-                    shift(teachers, course, i, size); //         сдвиг последующих элементов
+                    System.arraycopy(course, i + 1, course, i, size - 1 - i);
                     count--;
                     size--;
                     break;
@@ -74,18 +61,22 @@ public class Course {
                 System.out.println("Вы выбрали все курсы");
                 break;
             }
+        }
+    }
+    public void courseS(ArrayList students,HashMap hashMap, String[] course) {
 
-
+        for(int i=0;i<course.length;i++){
+            ArrayList<String> list = new ArrayList<String>();
+            for(int j=0;j<students.size();j++)
+            {
+                if( course[i].equals(hashMap.get(students.get(j)))) {
+                    String str = students.get(j).toString();
+                    list.add(str);
+                }
+            }
+            hashMap.put(course[i],list);
         }
     }
 
-    private void archive() {
-        try (FileWriter writer = new FileWriter("archive.txt", true)) {
-            writer.write("\n\t    " + this.course_stud);
-            writer.flush();
-        } catch (IOException ex) {
 
-            System.out.println(ex.getMessage());
-        }
-    }
 }

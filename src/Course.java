@@ -1,15 +1,69 @@
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.*;
 import java.lang.String;
-import java.util.Scanner;
 
 public class Course implements Serializable {
-    private String course;
+    private String name;
+    private Teacher teacher;
+    private List<Student> students;
 
 
 
+    private LocalDate start;
+    private LocalDate end;
+
+    public Course() {
+    }
+
+    public Course(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudent(Student student) {
+        if (this.students == null) {
+            this.students = new ArrayList<>();
+        }
+        this.students.add(student);
+    }
+
+    public LocalDate getStart() {
+        return start;
+    }
+
+    public void setStart(LocalDate start) {
+        this.start = start;
+    }
+
+    public LocalDate getEnd() {
+        return end;
+    }
+
+    public void setEnd(LocalDate end) {
+        this.end = end;
+    }
+}
+/*
     private String inputCourse() //ввод курса, на который хочет записаться студент
     {
         Scanner in = new Scanner(System.in);
@@ -36,11 +90,11 @@ public class Course implements Serializable {
                 {
                     System.out.println("Вы записались на курс " + course[i]);
                     this.course = course[i];// курс, который выбрал студент
-                    switch (i){
-                        case 0: alg.add(name); break;
-                        case 1: geo.add(name); break;
-                        case 2: progr.add(name); break;
-                    }
+
+                   if(i==0){ alg.add(name);System.out.println("+");}
+                    else if(i==1) {geo.add(name);System.out.println("-");}
+                    else if(i==2)  {progr.add(name);System.out.println("=");}
+
 
 
                     System.arraycopy(course, i + 1, course, i, size - 1 - i);
@@ -79,4 +133,4 @@ public class Course implements Serializable {
     }
 
 
-}
+}*/

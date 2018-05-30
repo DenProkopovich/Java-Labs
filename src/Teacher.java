@@ -2,9 +2,33 @@ import java.io.*;
 import java.util.Scanner;
 
 public class Teacher implements Serializable {
-    private String student;
-    private int value;
+    private String name;
+    private Course course;
 
+    public Teacher() {
+    }
+
+    public Teacher(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+}
+/*
     public boolean torS(String name, String[] teachers) {
         for (String teacher : teachers) {
             if (teacher.compareToIgnoreCase(name) == 0)
@@ -118,4 +142,4 @@ public class Teacher implements Serializable {
             System.out.println(ex.getMessage());
         }
     }
-}
+}*/

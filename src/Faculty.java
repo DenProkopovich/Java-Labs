@@ -1,95 +1,149 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
+
+import java.util.*;
 import java.lang.NullPointerException;
-import java.util.Scanner;
 
 public class Faculty {
     public static void main(String[] args) {
 
-        int size = 3;
-        String[] teachers = {"Бойко", "Иванов", "Петревич"};
-        String[] course = {"Алгебра", "Геометрия", "Программирование"};
-        ArrayList<String> courseStud = new ArrayList<String>();
-        ArrayList<String> students = new ArrayList<String>();
-        ArrayList<String> algebra = new ArrayList<String>();
-        ArrayList<String> geometry = new ArrayList<String>();
-        ArrayList<String> programming = new ArrayList<String>();
 
-        HashMap<String, ArrayList<String>> hashMapStud = new HashMap<String, ArrayList<String>>();
-        HashMap<String, ArrayList<String>> hashMapCourse = new HashMap<String, ArrayList<String>>();
-        Authorization autor = new Authorization();
+
+        Course[] course = new Course[3];
+        course[0] = new Course("Mathematics");
+        course[1] = new Course("Philosophy");
+        course[2] = new Course("Politology");
+        course= (Course[]) deserData("course1.xml");
+
+        Teacher[] teacher = new Teacher[3];
+        teacher[0] = new Teacher("Lox");
+        teacher[1] = new Teacher("Lox2");
+        teacher[2] = new Teacher("Lox3");
+        //teacher= (Teacher[]) deserData("teachers.xml");
+
+        for (int i = 0; i < 3; i++) {
+            teacher[i].setCourse(course[i]);
+            course[i].setTeacher(teacher[i]);
+        }
+
 
         while (true) {
-            String surname = autor.login;
+            int[] amount = new int[3];
             Scanner in = new Scanner(System.in);
-            System.out.print("Input oper ");
-            String oper = in.nextLine();
-            if (oper.equals("выход")) break;
-            if (autor.authorizations(teachers)) {
-                String[] mirror = {"Алгебра", "Геометрия", "Программирование"};
-                // HashMap<String, String> infoOfStudent = new HashMap<String, String>();
-                Student std = new Student();
-                // infoOfStudent.put(surname, surname + std.inputInfo());
-                System.out.println("Преподаватель  -   Курс");
-                System.out.println("--------------------------");
-                for (int i = 0; i < size; i++) {
-                    System.out.println(teachers[i] + "    -   " + course[i]);
-                }
-                System.out.println("--------------------------");
-
-                Course crs = new Course();
-                crs.courseStudent(size, course, mirror, algebra, geometry, programming, surname);
+            int k = 0;
+            System.out.print("Введите фамилию: ");
+            String name = in.nextLine();
+            boolean bool=true;
+            for (Teacher teache : teacher) {
+                if (name.compareToIgnoreCase(teache.getName()) == 0)
+                    bool = false;
+            }
+            if(name.equals("0")) break;
+            if (bool) {
 
 
-                students.add(surname);
-                course = mirror;
 
+                Student student1 = new Student(name);
 
-                if (students.size() > 0)
-                    crs.courseS(students, hashMapCourse, course);
-                course = mirror;
-
-            } else {
-                for (int i = 0; i < course.length; i++) {
-                    switch (i) {
-                        case 0:
-                            hashMapCourse.put(course[i], algebra);
-                            break;
+                while (true) {
+                    System.out.print("Mathematics - 1, Philosophy - 2, Politology - 3, exit - 0 ");
+                    int count=-1;
+                    try{count = in.nextByte(); }
+                    catch (InputMismatchException e)
+                    {
+                        System.out.println("Неккоректный ввод");
+                        continue;
+                    }
+                    if (count == 0) break;
+                    //// повтор курсов
+                    boolean boolRepeat=false;
+                    for(int i=0;i<amount.length;i++)
+                        if (count == amount[i])boolRepeat=true;
+                    if(boolRepeat) { System.out.println("Вы уже записались на этот курс");continue;}
+                    /////
+                    switch (count) {
                         case 1:
-                            hashMapCourse.put(course[i], geometry);
+                            student1.setCourse(course[0]);
+                            course[0].setStudent(student1);
+                            student1.setCourse(course[0]);
+                            amount[k] = count;
+                            k++;
+                            System.out.print("Course 1\n");
                             break;
                         case 2:
-                            hashMapCourse.put(course[i], programming);
+                            student1.setCourse(course[1]);
+                            course[1].setStudent(student1);
+                            student1.setCourse(course[1]);
+                            amount[k] = count;
+                            k++;
+                            System.out.print("Course 2\n");
+                            break;
+                        case 3:
+                            student1.setCourse(course[2]);
+                            course[2].setStudent(student1);
+                            student1.setCourse(course[2]);
+                            amount[k] = count;
+                            k++;
+                            System.out.print("Course 3\n");
+                            break;
+                        default:
                             break;
                     }
+                    if (k > 2) break;
                 }
-                Teacher tch = new Teacher();
-                int index = tch.teacherIndex(teachers, surname);
+                int size = k;
 
-                        System.out.println(hashMapCourse.get(course[index]));
+                System.out.println("Курсы на которые вы записались");
+                k = 0;
+                while (k < size) {
+                    System.out.printf("Teacher: %s | Course: %s \n",teacher[amount[k] - 1].getName(),course[amount[k] - 1].getName());
+                    k++;
+                }
+                System.out.println("\n");
+
+            } else {
+                int amountC = 0;
+                for (int i = 0; i < teacher.length; i++) {
+                    if (name.compareToIgnoreCase(teacher[i].getName()) == 0)
+                        amountC = i;
+                }
+                try {
+                    System.out.println("Студенты которые записались на курс "+course[amountC].getName()+": ");
+                    course[amountC].getStudents().forEach(student -> {
+                        System.out.println("\t"+student.getName());
+                    });
+                    course[amountC].getStudents().forEach(student -> {
+                        student.getMarks().forEach(mark ->
+                                System.out.printf("Student: %s | Course: %s | Mark: %d \n",student.getName() ,mark.getCourse().getName(), mark.getValue()));
+                    });
+
+/*                          ПОВТОРНЫЙ ВВОД ОЦЕНОК
+course[amountC].getStudents().forEach(student -> {
+student.getMarks().remove(student);
+});
+*/
 
 
+                    for (Student s : course[amountC].getStudents()) {
+                        System.out.print(s.getName() + " - " + course[amountC].getName() + "    mark ->");
+                        int mark = in.nextByte();
+                        s.setMark(mark, course[amountC]);
+                    }
+
+
+                    course[amountC].getStudents().forEach(student -> {
+                        student.getMarks().forEach(mark ->
+                                System.out.printf("Student: %s | Course: %s | Mark: %d \n",student.getName() ,mark.getCourse().getName(), mark.getValue()));
+                    });
+                } catch(NullPointerException e) {
+                    System.out.println("нету студентов");
+                }
             }
         }
+
+        serData("course1.xml",course);
+        serData("teachers.xml",teacher);
+
     }
-
-//                Teacher tch = new Teacher();
-//                int index =tch.teacherIndex(teachers, surname);
-//                System.out.println(index);
-//                if(hashMapCourse.get(course[index]).isEmpty()){
-//                    int sizeCS = hashMapCourse.get(course[index]).size();
-//
-//                    for (int i = 0; i < sizeCS; i++) {
-//                        System.out.print(hashMapCourse.get(course[index]).get(i) + " ");
-//                    }
-//                } else {
-//                    System.out.println("Никто не записался на ваш курс");
-//                    continue;
-//                }
-
-
     private static Object deserData(String file_name) {
         Object retObject = null;
 

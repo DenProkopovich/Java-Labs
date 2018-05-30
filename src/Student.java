@@ -1,10 +1,58 @@
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Student implements Serializable {
-    private String additionalInfo;
+    private String name;
+    private List<Course> courses;
+    private List<Mark> marks;
+
+    public Student() {
+    }
+
+    public Student(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
+    public void setMark(int value, Course course) {
+        if (this.marks == null) {
+            this.marks = new ArrayList<>();
+        }
+        this.marks.add(new Mark(value, course));
+    }
+
+    public void setCourse(Course course) {
+        if (this.courses == null) {
+            this.courses = new ArrayList<>();
+        }
+        this.courses.add(course);
+    }
+
+    public List<Mark> getMarks() {
+        return marks;
+    }
+}
+
+    /*private String additionalInfo;
 
 
     public String inputInfo() {
@@ -46,4 +94,4 @@ public class Student implements Serializable {
         str+=count;
         return str;
     }
-}
+}*/
